@@ -1,0 +1,23 @@
+name: gcp_retail_analytics
+version: "1.0.0"
+config-version: 2
+profile: gcp_retail_analytics
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  gcp_retail_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: incremental
+      +on_schema_change: sync_all_columns
+
+seeds:
+  gcp_retail_analytics:
+    +quote_columns: false

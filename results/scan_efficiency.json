@@ -1,0 +1,9 @@
+{
+  "focus_date": "2025-11-28",
+  "unpartitioned_baseline_bytes": 2999749,
+  "selected_daily_partition_bytes": 12468,
+  "selected_partition_files": 1,
+  "local_object_volume_reduction_pct": 99.58,
+  "method": "Compressed local Parquet object-size comparison for one daily partition against the unpartitioned all-history baseline.",
+  "warning": "This is a local object-volume estimate, not BigQuery bytes processed or billed-cost savings. Measure BigQuery job statistics after deployment for actual bytes processed."
+}

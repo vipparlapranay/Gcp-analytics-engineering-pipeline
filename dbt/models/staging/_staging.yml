@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Typed staging view; the source partition key is preserved for pruning.
+    columns:
+      - name: order_id
+        description: Unique order primary key.
+        tests:
+          - unique
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: customer_id
+        description: Synthetic customer key.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: product_id
+        description: Product dimension key.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+          - relationships:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+              arguments:
+                to: ref('products')
+                field: product_id
+      - name: order_date
+        description: Event date; downstream filters should constrain the partition.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: net_sales
+        description: Sales after discount, before cost of goods.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: region
+        description: Synthetic sales region.
+        tests:
+          - accepted_values:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+              arguments:
+                values: ["North", "South", "East", "West"]
+      - name: channel
+        description: Order channel.
+        tests:
+          - accepted_values:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+              arguments:
+                values: ["Online", "Store", "Partner"]

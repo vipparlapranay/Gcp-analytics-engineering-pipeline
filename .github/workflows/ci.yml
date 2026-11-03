@@ -1,0 +1,28 @@
+name: GCP analytics engineering validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m compileall -q src tests dashboard airflow
+      - run: python -m pytest -q
+      - run: python -m gcp_analytics.pipeline --orders-per-day 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gcp-analytics-benchmark
+          path: |
+            results/metrics.json
+            results/scan_efficiency.json
+            results/monthly_kpis.csv
+            results/monthly_segments.csv
+            results/evidence.json

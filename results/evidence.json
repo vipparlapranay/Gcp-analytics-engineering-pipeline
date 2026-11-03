@@ -1,0 +1,22 @@
+{
+  "monthly_sales": {
+    "month": "November 2025",
+    "previous_month": "October 2025",
+    "net_sales": 989492.25,
+    "previous_net_sales": 920109.87,
+    "month_over_month_change_pct": 7.54,
+    "gross_margin_change_percentage_points": -0.95,
+    "display": "November 2025 net sales were $989,492, up 7.5% versus October 2025; gross margin moved -0.95 pp."
+  },
+  "regional_driver": {
+    "region": "South",
+    "net_sales_change": 25600.33,
+    "display": "South had the largest absolute regional sales movement versus October 2025: up $25,600."
+  },
+  "campaign_context": {
+    "promo_orders": 275,
+    "discount_rate_pct": 21.38,
+    "gross_sales_share_pct": 10.45,
+    "display": "The seeded November North campaign covered 275 orders, with a 21.4% discount rate and 10.4% of November 2025 gross sales. This is descriptive context, not a causal lift estimate."
+  }
+}

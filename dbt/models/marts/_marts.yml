@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: mart_monthly_kpis
+    description: >-
+      Monthly business scorecard. BigQuery materializes this mart using
+      month partitions and replaces only the two most recent affected month
+      partitions on incremental runs.
+    columns:
+      - name: order_month
+        description: First day of month; BigQuery monthly partition key.
+        tests:
+          - not_null
+          - unique
+      - name: order_count
+        description: Number of valid retail orders in the month.
+        tests:
+          - not_null
+      - name: net_sales
+        description: Sales after discounts, before cost of goods.
+        tests:
+          - not_null
+      - name: gross_margin_rate
+        description: Gross profit divided by net sales.
+        tests:
+          - not_null
+  - name: mart_monthly_segments
+    description: Monthly sales and margin by region/category for dashboard drill-down.
+    columns:
+      - name: order_month
+        description: First day of month; BigQuery monthly partition key.
+        tests:
+          - not_null
+      - name: region
+        description: Sales region; BigQuery clustering key.
+        tests:
+          - not_null
+      - name: category
+        description: Product category; BigQuery clustering key.
+        tests:
+          - not_null
+      - name: net_sales
+        description: Segment sales after discounts.
+        tests:
+          - not_null

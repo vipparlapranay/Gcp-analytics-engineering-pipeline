@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('GCP_PROJECT_ID', target.database or 'local') }}"
+    schema: "{{ env_var('BQ_RAW_DATASET', 'raw') }}"
+    description: >-
+      Daily order facts, loaded from Hive-partitioned Parquet. The BigQuery
+      production table is partitioned by order_date and clustered by region
+      and category; DuckDB registers the equivalent local Parquet view.
+    tables:
+      - name: orders
+        description: One synthetic retail order per row; order dates are daily partitions.
+        config:
+          loaded_at_field: ingested_at
+          freshness:
+            warn_after: {count: 2, period: day}
+            error_after: {count: 7, period: day}
+        columns:
+          - name: order_id
+            description: Stable unique synthetic order identifier.
+          - name: order_date
+            description: Business event date and raw BigQuery partition key.
+          - name: customer_id
+            description: Synthetic customer identifier; not personal information.
+          - name: product_id
+            description: Foreign key to the product seed dimension.
+          - name: region
+            description: Synthetic sales region.
+          - name: net_sales
+            description: Sales after discounts and before cost of goods.

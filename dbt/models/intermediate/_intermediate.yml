@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_order_economics
+    description: Order-level economics with normalized month and margin rates.
+    columns:
+      - name: order_id
+        description: Unique source order.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+          - unique:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: order_month
+        description: First day of the order month.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: gross_profit
+        description: Net sales minus cost of goods.
+        tests:
+          - not_null:
+              config:
+                where: "order_date = cast('{{ var(\"quality_check_date\", \"2025-12-31\") }}' as date)"
+      - name: discount_rate
+        description: Discount amount divided by gross sales.
+      - name: gross_margin_rate
+        description: Gross profit divided by net sales.

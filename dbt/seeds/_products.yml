@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: products
+    description: Reference dimension for the deterministic synthetic order catalog.
+    columns:
+      - name: product_id
+        description: Stable product identifier and foreign key from orders.
+        tests:
+          - not_null
+          - unique
+      - name: category
+        description: Catalog product category.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Home", "Technology", "Wellness", "Outdoor"]
+      - name: standard_unit_price
+        description: Deterministic reference price; not a current market price.
+        tests:
+          - not_null
